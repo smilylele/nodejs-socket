@@ -15,14 +15,19 @@ io.on("connection", (socket) => {
 
     socket.on("CreateMessage", (newMessage) => {
         console.log("createdMessage" , newMessage)
-        io.emit("newMessage", {
-          from : newMessage.to,
-          text : newMessage.text,
-          createdAt : new Date().getTime()
-        });
     })
 
+    socket.emit("welcomeMessage", {
+        from : "Admin",
+        text : "Welcome to the chat app",
+        createdAt: new Date().getTime()
+    })
 
+    socket.broadcast.emit("welcomeMessage", {
+        from : "New user",
+        text : "New User joins",
+        createdAt: new Date().getTime()
+    })
 
     socket.on("disconnect", () => {
         console.log("User was disconnected.")
