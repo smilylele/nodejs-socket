@@ -13,26 +13,35 @@ socket.on("disconnect", function () {
 })
 
 socket.on("newMessage", function (message) {
-    // console.log("New message!", message)
-    var momentMessage = moment(moment.createdAt).format("h:mm:ss a")
+    var momentMessage = moment(message.createdAt).format("h:mm:ss a")
+    var template = jQuery("#message-template").html();
+    var html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        timestamp : momentMessage
+    });
 
-    var li = jQuery("<li></li>");
-    li.text(`${message.from} ${momentMessage}: ${message.text}`);
+    jQuery("#messages").append(html);
+    // // console.log("New message!", message)
 
-    jQuery("#messages").append(li);
+
+    // var li = jQuery("<li></li>");
+    // li.text(`${message.from} ${momentMessage}: ${message.text}`);
+
+    // jQuery("#messages").append(li);
 
 })
 
 socket.on("newLocationMessage", function (message) {
-    var momentMessage = moment(moment.createdAt).format("h:mm:ss a")
+    var momentMessage = moment(message.createdAt).format("h:mm:ss a")
+    var template = jQuery("#location-template").html();
+    var html = Mustache.render(template, {
+        url: message.url,
+        from: message.from,
+        timestamp : momentMessage
+    });
 
-    var li = jQuery("<li></li>");
-    var a = jQuery("<a target='_blank'>My current location</a>");
-
-    li.text(`${message.from} ${momentMessage}:  `);
-    a.attr("href", message.url);
-    li.append(a);
-    jQuery("#messages").append(li);
+    jQuery("#messages").append(html);
 })
 
 var messageTextbox = jQuery("[name=message]");
