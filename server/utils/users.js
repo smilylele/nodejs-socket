@@ -15,38 +15,30 @@ class Users {
     }
 
     removeUser (id) {
-        var users = this.users.filter((user) => {
+        var poppedUser = this.users.filter((user) => {
+            return user.id === id
+        })[0]
+
+        this.users = this.users.filter((user) => {
             return user.id !== id;
         })
 
-        var namelist = users.map((user) => {
-            return user.name
-        })
-
-        return namelist
+        return poppedUser
     }
 
     getUser (id) {
         var users = this.users.filter((user) => {
             return user.id === id;
         })
-
-        var namelist = users.map((user) => {
-            return user.name
-    })
-        return namelist
+        return users[0]
     }
 
+
     getUserList (room) {
-        var users = this.users.filter((user) => {
-            return user.room === room;
-        });
+    var users = this.users.filter((user) => user.room === room);
+    var namesArray = users.map((user) => user.name);
 
-        var namelist = users.map((user) => {
-            return user.name
-        })
-
-        return namelist
+    return namesArray;
 
     }
 }
